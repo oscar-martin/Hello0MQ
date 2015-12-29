@@ -2,12 +2,16 @@ import org.zeromq.ZMQ
 
 object Main{
     def main(args : Array[String]) {
+        if (args.length != 1) {
+            println("Usage Main <server hostname or IP address>")
+        }
         //  Prepare our context and socket
         val context = ZMQ.context(1)
         val socket = context.socket(ZMQ.REQ)
 
-        socket.connect("tcp://localhost:5555")
-        println("Connected to Server on localhost:5555")
+        val serverHost = args(0)
+        socket.connect("tcp://" + serverHost + ":5555")
+        println("Connected to Server on " + serverHost + ":5555")
 
         for (request_nbr <- 1 to 5)  {
             val request = "Hello ZQM"
